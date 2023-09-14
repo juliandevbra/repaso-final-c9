@@ -4,9 +4,9 @@ import { useCharStates } from '../Context/Context'
 
 const Card = ({char}) => {
 
-    const {favs, setFavs} = useCharStates()
+    const {dispatch} = useCharStates()
     const addFav = () => {
-        setFavs([...favs, char])
+        dispatch({type: 'ADD_FAV', payload: char})
     }
   return (
     <div>

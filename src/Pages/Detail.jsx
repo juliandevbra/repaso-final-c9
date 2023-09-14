@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom'
 import { useCharStates } from '../Context/Context'
 
 const Detail = () => {
-    const [char, setChar] = useState({})
+    const {state, dispatch} = useCharStates()
     const [loading, setLoading] = useState(true)
     const {id} = useParams()
-
+    const {name, image, location, status} = state.char
     console.log(id)
     const url = 'https://rickandmortyapi.com/api/character/' + id
   
@@ -16,7 +16,7 @@ const Detail = () => {
         fetch(url)
         .then(res => res.json())
         .then(data => {
-            setChar(data)
+            dispatch({type: 'GET_CHAR', payload: data})
             setLoading(false)
         })
     }, [])
@@ -24,10 +24,10 @@ const Detail = () => {
     return (
     <div>
         {loading ? 'Cargando...' : <>
-            <h1>Name: {char.name}</h1>
-            <img src={char.image} alt="" />
-            <h3>Location: {char.location.name}</h3>
-            <h3>Status: {char.status}</h3>
+            <h1>Name: {name}</h1>
+            <img src={image} alt="" />
+            <h3>Location: {location.name}</h3>
+            <h3>Status: {status}</h3>
         </>}
     </div>
   )
