@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useCharStates } from '../Context/Context'
 
 const Detail = () => {
@@ -13,12 +14,23 @@ const Detail = () => {
     const url = 'https://rickandmortyapi.com/api/character/' + id
   
     useEffect(() => {
-        fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            dispatch({type: 'GET_CHAR', payload: data})
-            setLoading(false)
-        })
+        const fetchData = async () => {
+            try {
+                const res = await fetch(url)
+                const data = await res.json()
+                dispatch({type: 'GET_CHAR', payload: data})
+                setLoading(false)
+                toast('Se logró traer el detalle')
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error al traer el detalle',
+                    timer: 2000
+                })
+            }
+        }
+        fetchData()
     }, [])
   
     return (
